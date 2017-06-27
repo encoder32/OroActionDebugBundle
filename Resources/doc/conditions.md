@@ -18,6 +18,20 @@ Dump Condition
 **Code Example**
 
 ```yml
-- @dump_true: 'my label, true'
-- @dump_false: 'my label, false'
+# Resources/config/oro/actions.yml
+operations:
+    test_user_operation:
+        label: Test Operation
+        entities:
+            - Oro\Bundle\UserBundle\Entity\User
+        datagrids:
+            - oro-users-grid
+        preactions:
+            - '@assign_value': [$.testId, $id]
+            - '@assign_value': [$.myTrueVar, true]
+            - '@assign_value': [$.myFalseVar, false]
+        preconditions:
+            '@and':
+                - '@dump_true': 'preconditions'
+                - '@gt': [$.testId, 10]
 ```
