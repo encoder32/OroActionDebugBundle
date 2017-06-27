@@ -1,0 +1,8 @@
+services:
+    oro_action.action.dump:
+        class: Oro\Bundle\ActionDebugBundle\Action\Dump
+        arguments:
+            - '@oro_action.expression.context_accessor'
+        tags:
+            - { name: oro_action.action, alias: dump }
+

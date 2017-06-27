@@ -1,1 +1,5 @@
+imports:
+    - { resource: 'actions.yml' }
+    - { resource: 'conditions.yml' }
+
 services: ~

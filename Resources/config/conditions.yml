@@ -1,0 +1,14 @@
+services:
+    oro_action.expression.dump_true:
+        class: Oro\Bundle\ActionDebugBundle\Condition\Dump
+        arguments:
+            - true
+        tags:
+            - { name: oro_action.condition, alias: dump_true }
+
+    oro_action.expression.dump_false:
+        class: Oro\Bundle\ActionDebugBundle\Condition\Dump
+        arguments:
+            - false
+        tags:
+            - { name: oro_action.condition, alias: dump_false }
