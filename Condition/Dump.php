@@ -43,6 +43,9 @@ class Dump extends AbstractCondition implements ContextAccessorAwareInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function isConditionAllowed($context)
     {
         if (function_exists('dump')) {
