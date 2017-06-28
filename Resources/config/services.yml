@@ -2,4 +2,9 @@ imports:
     - { resource: 'actions.yml' }
     - { resource: 'conditions.yml' }
 
-services: ~
+services:
+    oro_action_debug.event_listener.execute_action:
+        class: 'Oro\Bundle\ActionDebugBundle\EventListener\ExecuteActionListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_action.action.handle_before, method: beforeExecute }
+            - { name: kernel.event_listener, event: oro_action.action.handle_after, method: afterExecute }
