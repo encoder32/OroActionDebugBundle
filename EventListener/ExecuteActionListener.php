@@ -6,6 +6,8 @@ use Oro\Component\Action\Event\ExecuteActionEvent;
 
 class ExecuteActionListener
 {
+    const MAX_DEPTH = 6;
+
     /** @var bool */
     protected $enabled = false;
 
@@ -48,6 +50,10 @@ class ExecuteActionListener
         ]);
     }
 
+    /**
+     * @param mixed $context
+     * @return array
+     */
     protected function getScalarValues($context)
     {
         $result = [];
@@ -58,16 +64,13 @@ class ExecuteActionListener
                 'result' => $this->getValues($context->getResult()),
             ];
         } elseif ($context instanceof \Oro\Bundle\WorkflowBundle\Model\ProcessData) {
-            //$result['data'] = $this->getValues($context->getEntity());
             $result = $this->getValues($context);
         } elseif ($context instanceof \Oro\Bundle\ActionBundle\Model\ActionData) {
             $result = $this->getValues($context);
         } elseif (is_object($context)) {
-            //$result = $this->getValues($context);
             $reflection = new \ReflectionClass($context);
             foreach($reflection->getProperties() as $property) {
                 $property->setAccessible(true);
-                //$result[$property->getName()] = $this->getScalarValues($property->getValue($context));
                 $result[$property->getName()] = $property->getValue($context);
             }
             $result = $this->getValues($result);
@@ -76,10 +79,15 @@ class ExecuteActionListener
         return $result;
     }
 
+    /**
+     * @param mixed $context
+     * @param int $depth
+     * @return string|array
+     */
     protected function getValues($context, $depth = 0)
     {
-        if ($depth > 6) {
-            return 'N/A (6)';
+        if ($depth > self::MAX_DEPTH) {
+            return 'N/A';
         }
 
         $result = [];
@@ -92,14 +100,12 @@ class ExecuteActionListener
             if ($context instanceof \ArrayAccess) {
                 foreach($context as $key => $value) {
                     $result[$key] = $this->getValues($value, $depth++);
-                    //$result[$key] = 123;
                 }
             } else {
                 $result = get_class($context);
                 if (method_exists($context, 'getId')) {
                     $result .= ':' . $context->getId() ?: 'NULL';
                 }
-                //$result = serialize($context);
                 if (method_exists($context, '__toString')) {
                     $result .= '(' . (string)$context . ')';
                 }
