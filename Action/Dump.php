@@ -4,6 +4,9 @@ namespace Oro\Bundle\ActionDebugBundle\Action;
 
 use Oro\Component\Action\Action\AbstractAction;
 
+/**
+ * Dump current context to Debug Toolbar
+ */
 class Dump extends AbstractAction
 {
     /** @var array */

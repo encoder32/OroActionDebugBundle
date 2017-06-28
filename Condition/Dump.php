@@ -7,6 +7,9 @@ use Oro\Component\ConfigExpression\ContextAccessorAwareTrait;
 
 use Oro\Component\ConfigExpression\Condition\AbstractCondition;
 
+/**
+ * Dump current context into Debug Toolbar and return TRUE or FALSE result
+ */
 class Dump extends AbstractCondition implements ContextAccessorAwareInterface
 {
     use ContextAccessorAwareTrait;

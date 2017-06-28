@@ -3,10 +3,11 @@
 namespace Oro\Bundle\ActionDebugBundle\EventListener;
 
 use Oro\Component\Action\Event\ExecuteActionEvent;
+use Symfony\Component\VarDumper\VarDumper;
 
 class ExecuteActionListener
 {
-    const MAX_DEPTH = 6;
+    const MAX_DEPTH = 7;
 
     /** @var bool */
     protected $enabled = false;
@@ -28,7 +29,7 @@ class ExecuteActionListener
             return;
         }
 
-        print_r([
+        VarDumper::dump([
             'execute action' => get_class($event->getAction()),
             'options' => $this->getScalarValues($event->getAction()),
             'context values' => $this->getScalarValues($event->getContext())
@@ -44,7 +45,7 @@ class ExecuteActionListener
             return;
         }
 
-        print_r([
+        VarDumper::dump([
             '/execute action' => get_class($event->getAction()),
             'context values' => $this->getScalarValues($event->getContext())
         ]);
@@ -87,7 +88,7 @@ class ExecuteActionListener
     protected function getValues($context, $depth = 0)
     {
         if ($depth > self::MAX_DEPTH) {
-            return 'N/A';
+            return !is_object($context) ? $context : 'N/A';
         }
 
         $result = [];
