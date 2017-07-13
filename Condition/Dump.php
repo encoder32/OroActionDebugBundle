@@ -4,9 +4,13 @@ namespace Oro\Bundle\ActionDebugBundle\Condition;
 
 use Oro\Component\ConfigExpression\ContextAccessorAwareInterface;
 use Oro\Component\ConfigExpression\ContextAccessorAwareTrait;
-
 use Oro\Component\ConfigExpression\Condition\AbstractCondition;
 
+use Symfony\Component\VarDumper\VarDumper;
+
+/**
+ * Dump current context into Debug Toolbar and return TRUE or FALSE result
+ */
 class Dump extends AbstractCondition implements ContextAccessorAwareInterface
 {
     use ContextAccessorAwareTrait;
@@ -48,9 +52,7 @@ class Dump extends AbstractCondition implements ContextAccessorAwareInterface
      */
     protected function isConditionAllowed($context)
     {
-        if (function_exists('dump')) {
-            dump([reset($this->options) => $context]);
-        }
+        VarDumper::dump([reset($this->options) => $context]);
 
         return $this->result;
     }
