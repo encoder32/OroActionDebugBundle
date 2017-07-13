@@ -4,6 +4,8 @@ namespace Oro\Bundle\ActionDebugBundle\Action;
 
 use Oro\Component\Action\Action\AbstractAction;
 
+use Symfony\Component\VarDumper\VarDumper;
+
 /**
  * Dump current context to Debug Toolbar
  */
@@ -33,12 +35,6 @@ class Dump extends AbstractAction
      */
     protected function executeAction($context)
     {
-        if (function_exists('dump')) {
-            dump([reset($this->options) => $context]);
-        } elseif (method_exists($context, 'getScalarValues')) {
-            print_r([reset($this->options) => $context->getScalarValues()]);
-        } else {
-            print_r([reset($this->options)]);
-        }
+        VarDumper::dump([reset($this->options) => $context]);
     }
 }
